@@ -1,1 +1,1 @@
-# darrenlu
+# Hi, welcome to my Github. There are a couple of my projects from classes at UCLA as well as from my own personal experiments. Have a look around!
