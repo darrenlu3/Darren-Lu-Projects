@@ -1,0 +1,28 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+This is my CS 111 Lab 0 project, a warmup program that copies input to output with IO redirection. Option flags allow different capabilities.
+
+README: file containing description of files and smoketest explanations
+
+lab0.c: source file for lab0 project
+
+backtrace.png: shows lab0 with --segfault call and associated stack-trace
+
+breakpoint.png: shows lab0 with --segfault call and a breakpoint set in gdb with variable inspection
+
+Makefile: compiles the lab0 executable, runs smoketest, cleans up files and compresses files into a tarball.
+
+smoketest.sh: a bash script intended to test functionality of lab0
+
+smoketest tests:
+	  normal function copying stdin to stdout
+	  --input flag with no argument, nonexistent file, and nominal function
+	  --output flag with no argument, inaccessible file and nominal function
+	  --input flag combined with --output flag
+	  testing --segfault flag and whether or not input is copied to output with it
+	  testing --catch flag with segfault flag
+	  testing for unrecognized arguments
+
+Some code snippets were taken from Week 1 slides provided by Section 1E TA
