@@ -1,0 +1,40 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+README: file containing description of files
+
+SortedList.h: provided header file for project 2a
+
+SortedList.c: implementation of doubly linked list methods
+
+lab2_list.c: source file for lab2_list program
+
+lab2b_list.csv: contains all results for tests
+
+lab2_list(1 to 5).png: graphs created by the Makefile graphs target for the part 2 tests
+
+Makefile: compiles the lab2_list executable, runs tests, generates graphs, cleans up files, and compresses files into a tarball.
+
+list_test.sh: shell test script for running ./lab2_list with different parameters
+
+Question 2.3.1 
+	 I believe that most of the cycles in the 1 and 2 thread list tests are spent on the list operations themselves, because there is little to none contention for the locks.
+	 I believe that these are the most expensive parts of the code because the insertion and deletion are repeated thousands of times over iterations and there are little context switches/contentions due to having only 1-2 threads.
+	 In high thread spin lock tests, i believe that most of the cycles are being spent in the spin lock because the threads will have to spin-wait while trying to enter a critical section held by another thread.
+	 In high thread count mutex tests I believe that most of the cycles are being spent on context switches when the thread can't acquire the lock due to contention.
+
+Question 2.3.2
+	 The spin lock line is consuming most of the cycles when the list exerciser is run with a large number of threads using the spin lock sync mode.
+	 This operation becomes expensive with large numbers of threads because instead of yielding when the lock is inaccessible the thread spends the rest of its time slice checking repeatedly if the lock is free. This means that a lot of time is wasted doing nothing.
+
+Question 2.3.3
+	 The average lock wait time rises dramatically with the number of contending threads as each thread will be put into a queue of waiting threads before context switching to the next thread. This means that as a lock is occupied it takes longer and longer as more threads are added and more context switches are needed until a thread can complete its job and release the lock.
+	 The completion time per operation also rises with the number of contending threads because it takes longer for the thread to access the critical section as it must wait for the lock to be released. It rises less dramatically because little time is spent relatively context switching compared to waiting for a lock to be free.
+	 It could be possible for the wait time per operation to go up faster than the completion time per operation if there are so many threads that the context switches add up to take more time than the operation itself.
+
+Question 2.3.4
+	 For mutex synchronized list operations, the more lists there are the higher the throughput of the program. This is because the program can take advantage of multiprocessing effectively and have multiple threads performing list operations without waiting for locks being held by other threads. For spin synchronized threads the same is true, but the efficiency of multiprocessing goes down as more threads are added due to the use of spinning during while acquiring locks.
+	 The throughput should continue increasing until there is a bottleneck in the list operations. This bottleneck could be in any of the list operations as there are still critical sections within the functions to prevent threads from writing to the same hashed list at the same time.
+	 The throughput of an N way partitioned list does not appear to be equivalent to the throughput of a single list with fewer threads. This is because the n way partitioned list takes better advantage of multiprocessing and can perform more operations per second. 
+	 

@@ -1,0 +1,11 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+README: file containing description of files
+
+SortedList.h: provided header file for the ext2_fs format
+
+lab3a.c: source file for lab3a program
+
+Makefile: compiles the lab3 executable, cleans up files, and compresses files into a tarball.

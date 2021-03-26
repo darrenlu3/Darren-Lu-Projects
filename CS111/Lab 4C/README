@@ -1,0 +1,11 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+README: file containing description of files
+
+lab4c_tcp.c: source file for lab4c_tcp program which uses a tcp connection.
+
+lab4c_tls.c: source file for lab4c_tls program which uses tls
+
+Makefile: compiles the lab4 executable, cleans up files, and compresses files into a tarball.

@@ -1,0 +1,13 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+README: file containing description of files
+
+lab1b-client.c: source file for lab1b project: client side
+
+lab1b-server.c: source file for lab1b project: server side
+
+Makefile: compiles the lab1b-client and lab1b-server executables, cleans up files, and compresses files into a tarball.
+
+I could not get the log option working, and I could not properly process decompressed commands. Wondering if I could get a bit of partial credit for these parts?

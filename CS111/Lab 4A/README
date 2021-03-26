@@ -1,0 +1,20 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+Beaglebone Serial number: BBGW20061294
+Beaglebone MAC address: 2CF7F106C20D
+
+README: file containing description of files
+
+Makefile: compresses files into a tarball.
+
+my_beaglebone.jpg: a selfie of myself holding my assembled Beaglebone
+
+connected.png: a screenshot from a USB terminal command session connected to my system, with a given name and configured network access.
+
+copy.png: a screenshot from a local session where I copied a hello world program to the Beaglebone
+
+build_run.png: a screenshot from a WIFI SSH session in which i built and run a hello world program
+
+git.png: a screenshot from a WIFI SSH session in which i installed git and cloned a repository

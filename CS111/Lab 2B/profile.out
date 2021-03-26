@@ -1,0 +1,150 @@
+ROUTINE ====================== add_thread in /u/eng/ugrad/darrenl/111/lab2b/lab2_list.c
+    41     51 Total samples (flat / cumulative)
+     .      .   88:   long time_waited;
+     .      .   89: };
+     .      .   90: long lock = 0;
+     .      .   91: long timewaited;
+     .      .   92: void* add_thread(void *threadargs)
+---
+     .      .   93: {
+     .      .   94:   struct thread_args *args;
+     .      .   95:   args = (struct thread_args*)threadargs;
+     .      .   96:   int threadNum = (int)args->threadNum;
+     .      .   97:   long iter = (long)args->iterations;
+     .      .   98:   char mode = (char)args->sync;
+     .      .   99:   long startIndex = threadNum*iter;
+     .      .  100:   //fprintf(stderr, "%ld\n", iter);
+     .      .  101:   int i;
+     .      .  102:   //FUNCTIONALITY with help from discussion 1b week 4 and 5
+     .      .  103: 
+     .      .  104:   //Get start time                                                                                                  
+     .      .  105:   struct timespec lockstart,lockstop;
+     .      .  106:   if(clock_gettime(CLOCK_MONOTONIC, &lockstart) == -1){
+     .      .  107:     fprintf(stderr, "Error getting start time. Reason: %s", strerror(errno));
+     .      .  108:     _exit(1);
+     .      .  109:   }
+     .      .  110: 
+     .      .  111:   if (mode == 'm') pthread_mutex_lock(&mutexlock);
+    40     40  112:   if (mode == 's') while(__sync_lock_test_and_set(&lock,1));
+     .      .  113: 
+     .      .  114:   //Get stop time
+     .      .  115:   if(clock_gettime(CLOCK_MONOTONIC, &lockstop) == -1){
+     .      .  116:     fprintf(stderr, "Error getting stop time. Reason: %s", strerror(errno));
+     .      .  117:     _exit(1);
+     .      .  118:   } 
+     .      .  119:   //fprintf(stderr, "threadnum %d", threadNum);
+     .      .  120:   //wait_time[threadNum] = (long) malloc(sizeof(long));
+     .      .  121:   timewaited = get_nanosec_from_timespec(&lockstop) - get_nanosec_from_timespec(&lockstart);
+     .      .  122:   //fprintf(stderr, "%ld\n", timewaited);
+     .      .  123: 
+     .      .  124:   //for(i = startIndex; i< startIndex + iter; i++) SortedList_insert(listhead, &pool[i]);
+     .      6  125:   for(i=startIndex; i<startIndex + iter; i++) Mul_SortedList_insert(&pool[i]);
+     .      .  126: 
+     .      .  127:   //int status = SortedList_length(listhead);
+     .      .  128:   int status = Mul_SortedList_length();
+     .      .  129:   if (status <= 0){
+     .      .  130:     fprintf(stderr,"SortedList_length returned a nonpositive value. Exiting.\n");
+     .      .  131:     _exit(2);
+     .      .  132:   }
+     .      .  133:   //fprintf(stderr, "Thread %d sorted list length %d\n",threadNum,status);
+     .      .  134:   SortedListElement_t* e;
+     .      .  135:   for(i = startIndex; i<startIndex + iter; i++){
+     .      .  136:     //e = SortedList_lookup(listhead, (&pool[i])->key);
+     1      5  137:     e = Mul_SortedList_lookup((&pool[i])->key);
+     .      .  138:     if (e == NULL){
+     .      .  139:       fprintf(stderr,"SortedList_lookup could not find the provided element. Exiting.\n");
+     .      .  140:       _exit(2);
+     .      .  141:     }
+     .      .  142:     int g = SortedList_delete(e);
+     .      .  143:     if (g < 0){
+     .      .  144:       fprintf(stderr,"SortedList_delete returned a negative value. Exiting.\n");
+     .      .  145:       _exit(2);
+     .      .  146:     }
+     .      .  147:   }
+     .      .  148:   if (mode == 'm') pthread_mutex_unlock(&mutexlock);
+     .      .  149:   if (mode =='s') __sync_lock_release(&lock);
+     .      .  150: 
+     .      .  151:   return((void*)&timewaited);
+     .      .  152:   pthread_exit(NULL);
+     .      .  153: }
+---
+     .      .  154: 
+     .      .  155: 
+     .      .  156: void init_key(char* key){
+     .      .  157:   char chars[] = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
+     .      .  158:   int i;
+ROUTINE ====================== add_thread in /u/eng/ugrad/darrenl/111/lab2b/lab2_list.c
+    41     51 Total samples (flat / cumulative)
+     .      .   88:   long time_waited;
+     .      .   89: };
+     .      .   90: long lock = 0;
+     .      .   91: long timewaited;
+     .      .   92: void* add_thread(void *threadargs)
+---
+     .      .   93: {
+     .      .   94:   struct thread_args *args;
+     .      .   95:   args = (struct thread_args*)threadargs;
+     .      .   96:   int threadNum = (int)args->threadNum;
+     .      .   97:   long iter = (long)args->iterations;
+     .      .   98:   char mode = (char)args->sync;
+     .      .   99:   long startIndex = threadNum*iter;
+     .      .  100:   //fprintf(stderr, "%ld\n", iter);
+     .      .  101:   int i;
+     .      .  102:   //FUNCTIONALITY with help from discussion 1b week 4 and 5
+     .      .  103: 
+     .      .  104:   //Get start time                                                                                                  
+     .      .  105:   struct timespec lockstart,lockstop;
+     .      .  106:   if(clock_gettime(CLOCK_MONOTONIC, &lockstart) == -1){
+     .      .  107:     fprintf(stderr, "Error getting start time. Reason: %s", strerror(errno));
+     .      .  108:     _exit(1);
+     .      .  109:   }
+     .      .  110: 
+     .      .  111:   if (mode == 'm') pthread_mutex_lock(&mutexlock);
+    40     40  112:   if (mode == 's') while(__sync_lock_test_and_set(&lock,1));
+     .      .  113: 
+     .      .  114:   //Get stop time
+     .      .  115:   if(clock_gettime(CLOCK_MONOTONIC, &lockstop) == -1){
+     .      .  116:     fprintf(stderr, "Error getting stop time. Reason: %s", strerror(errno));
+     .      .  117:     _exit(1);
+     .      .  118:   } 
+     .      .  119:   //fprintf(stderr, "threadnum %d", threadNum);
+     .      .  120:   //wait_time[threadNum] = (long) malloc(sizeof(long));
+     .      .  121:   timewaited = get_nanosec_from_timespec(&lockstop) - get_nanosec_from_timespec(&lockstart);
+     .      .  122:   //fprintf(stderr, "%ld\n", timewaited);
+     .      .  123: 
+     .      .  124:   //for(i = startIndex; i< startIndex + iter; i++) SortedList_insert(listhead, &pool[i]);
+     .      6  125:   for(i=startIndex; i<startIndex + iter; i++) Mul_SortedList_insert(&pool[i]);
+     .      .  126: 
+     .      .  127:   //int status = SortedList_length(listhead);
+     .      .  128:   int status = Mul_SortedList_length();
+     .      .  129:   if (status <= 0){
+     .      .  130:     fprintf(stderr,"SortedList_length returned a nonpositive value. Exiting.\n");
+     .      .  131:     _exit(2);
+     .      .  132:   }
+     .      .  133:   //fprintf(stderr, "Thread %d sorted list length %d\n",threadNum,status);
+     .      .  134:   SortedListElement_t* e;
+     .      .  135:   for(i = startIndex; i<startIndex + iter; i++){
+     .      .  136:     //e = SortedList_lookup(listhead, (&pool[i])->key);
+     1      5  137:     e = Mul_SortedList_lookup((&pool[i])->key);
+     .      .  138:     if (e == NULL){
+     .      .  139:       fprintf(stderr,"SortedList_lookup could not find the provided element. Exiting.\n");
+     .      .  140:       _exit(2);
+     .      .  141:     }
+     .      .  142:     int g = SortedList_delete(e);
+     .      .  143:     if (g < 0){
+     .      .  144:       fprintf(stderr,"SortedList_delete returned a negative value. Exiting.\n");
+     .      .  145:       _exit(2);
+     .      .  146:     }
+     .      .  147:   }
+     .      .  148:   if (mode == 'm') pthread_mutex_unlock(&mutexlock);
+     .      .  149:   if (mode =='s') __sync_lock_release(&lock);
+     .      .  150: 
+     .      .  151:   return((void*)&timewaited);
+     .      .  152:   pthread_exit(NULL);
+     .      .  153: }
+---
+     .      .  154: 
+     .      .  155: 
+     .      .  156: void init_key(char* key){
+     .      .  157:   char chars[] = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
+     .      .  158:   int i;

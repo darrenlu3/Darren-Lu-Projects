@@ -1,0 +1,56 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+README: file containing description of files
+
+lab2_add.c: source file for lab2_add program
+
+SortedList.h: provided header file for project 2a
+
+SortedList.c: implementation of doubly linked list methods
+
+lab2_list.c: source file for lab2_list program
+
+lab2_add.csv: contains all results for part-1 tests
+
+lab2_list.csv: contains all results for part-2 tests
+
+lab2_add-(1 to 5).png: graphs created by the Makefile graphs target for the part 1 tests
+
+lab2_list(1 to 5).png: graphs created by the Makefile graphs target for the part 2 tests
+
+Makefile: compiles the lab2_add and lab2_list executables, runs tests, generates graphs, cleans up files, and compresses files into a tarball.
+
+add_test.sh: shell test script for running ./lab2_add with different parameters
+
+list_test.sh: shell test script for running ./lab2_list with different parameters
+
+Question 2.1.1:
+	 It takes roughly around 2500 iterations with 10 concurrent threads to cause consistent race condition failures.
+	 It takes many iterations before errors are seen because otherwise the thread may finish its operation before its time slice runs out and is interrupted and another thread takes over.
+	 A significantly smaller number of iterations seldomly fails because the threads will usually finish their operations before their allotted time slice is over, meaning no race condition occurs.
+
+Question 2.1.2
+	 It takes around 20 iterations to result in a failure with the yield option consistently from 2-12 threads. It is much easier to cause failures now.
+	 The --yield runs are much slower because by yielding, the threads are causing a lot of context switches each time they call the add routine.
+	 The additional time is going into context switches and scheduling.
+	 It is not possible to get valid per-operation timings if we are using the --yield option because the thread will yield every time during the add routine, causing it to use two time slices every add operation and hence not giving a valid per-operation timing.
+
+Question 2.1.3
+	 The average cost per operation drops with increasing iterations perhaps because as the more iterations occur the more the cpu decides to put the program variables addresses into cache to make the add operations more efficient. There could also be less page misses as iterations increases due to the operating system preferring to keep the highly used page in the TLB.
+	 If the cost per iteration is a function, one way we can know how many iterations to run is to find the inflexion point of the function to see at which point more iterations would lead to diminishing returns on reducing the cost per iteration. This could be found by taking the second derivative of the function and finding when it equals 0.
+
+Question 2.1.4
+	 The options perform similarly for low numbers of threads because the lock is checked less often by competing threads. This means that less time is spent on lock operations involving CAS, mutex, and spinning and that less context switches occur when the thread is running.
+	 The protected operations slow down as the number of threads rises because each thread attempts to use the lock but is barred from the critical section and made to wait. This takes up time and slows down the operation as more and more threads are forced to wait to enter the critical section.
+
+Question 2.2.1
+	 The time per mutex-protected operation vs the number of threads in both part-1 and part-2 tends to decrease as the number of threads increases.
+	 The shapes of the curves are reciprocal curves with asymptotes at a particular cost per operation. They have this shape because as there are more threads the more efficiently the operations can be multithreaded and shared while lowering context switching, but this increase of efficiency approaches a limit as the locks are held by single threads and other threads must wait before entering the critical section.
+	 The relative rate of decrease in the add-graph is higher than the list-graph, and the curve in the list-graph is flatter than the one in the add-graph. This could be because the linked list operations time per iteration becomes linear because the time to insert or search a sorted list is proportional to its length, while the add operations can be made efficient through caching of the variable address and storing of pages in the TLB.
+
+Question 2.2.2
+	 The time per protected operation vs number of threads for list operations protected by Mutex vs Spin locks is relatively similar at low numbers of threads (1-3) but diverges as more threads are added. This is probably because each thread added also adds more time wasted by spinning while waiting during a time slice.
+	 The general shape of the mutex-protected operations is roughly a flat line, while the shape of the spin-protected operations is like a upwards parabola. This is probably because the mutex-protected operations are quite scalable compared to the spin-protected operations which take more and more time with more threads spinning while waiting for the lock.
+	 The relative rate of increase is much higher for spin-locks, as described above the more threads there are the more time is wasted by threads waiting for the lock by spinning their time slice away.

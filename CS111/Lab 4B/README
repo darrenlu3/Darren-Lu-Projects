@@ -1,0 +1,9 @@
+NAME: Darren Lu
+EMAIL: darrenlu3@ucla.edu
+ID: 205394473
+
+README: file containing description of files
+
+lab4b.c: source file for lab4b program
+
+Makefile: compiles the lab4b executable, cleans up files, and compresses files into a tarball.
